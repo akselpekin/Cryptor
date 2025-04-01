@@ -1,0 +1,22 @@
+{
+    "configurations": [
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:enordecrypt}",
+            "name": "Debug enordecrypt",
+            "program": "${workspaceFolder:enordecrypt}/.build/debug/enordecrypt",
+            "preLaunchTask": "swift: Build Debug enordecrypt"
+        },
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:enordecrypt}",
+            "name": "Release enordecrypt",
+            "program": "${workspaceFolder:enordecrypt}/.build/release/enordecrypt",
+            "preLaunchTask": "swift: Build Release enordecrypt"
+        }
+    ]
+}
