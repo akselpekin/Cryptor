@@ -3,10 +3,10 @@ import Cocoa
 class AppDelegate: NSObject, NSApplicationDelegate {
     var window: NSWindow?
 
-    @MainActor private var textField: NSTextField = {
-        let tf = NSTextField(labelWithString: "Select a file.")
-        tf.font = NSFont.systemFont(ofSize: 48, weight: .bold)
-        tf.alignment = .center
+    @MainActor private var titleLabel: NSTextField = {
+        let tf = NSTextField(labelWithString: "Cryptor 1.0")
+        tf.font = NSFont.systemFont(ofSize: 32, weight: .semibold)
+        tf.alignment = .left
         tf.textColor = .black
         tf.isEditable = false
         tf.isBordered = false
@@ -15,8 +15,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         return tf
     }()
 
-    private var textFieldCenterXConstraint: NSLayoutConstraint?
-
     func applicationDidFinishLaunching(_ notification: Notification) {
         let window = NSWindow(
             contentRect: NSRect(x: 0, y: 0, width: 800, height: 400),
@@ -24,10 +22,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             backing: .buffered,
             defer: false
         )
-
+        
         window.isOpaque = true
         window.backgroundColor = .clear
-
         window.titleVisibility = .hidden
         window.titlebarAppearsTransparent = false
         window.isMovableByWindowBackground = true
@@ -39,34 +36,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 layer.masksToBounds = true
                 layer.backgroundColor = NSColor.white.cgColor
             }
+
+            contentView.addSubview(titleLabel)
+
+            NSLayoutConstraint.activate([
+                titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),
+                titleLabel.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 20)
+            ])
         }
-
-        window.contentView?.addSubview(textField)
-
-        textFieldCenterXConstraint = textField.centerXAnchor.constraint(equalTo: window.contentView!.centerXAnchor)
-        textFieldCenterXConstraint?.isActive = true
-        NSLayoutConstraint.activate([
-            textField.centerYAnchor.constraint(equalTo: window.contentView!.centerYAnchor)
-        ])
-
-        let clickGesture = NSClickGestureRecognizer(target: self, action: #selector(handleClick(_:)))
-        textField.addGestureRecognizer(clickGesture)
-        textField.isSelectable = true
 
         window.center()
         window.makeKeyAndOrderFront(nil)
         self.window = window
-    }
-
-        @MainActor @objc private func handleClick(_ sender: NSClickGestureRecognizer) {
-        NSAnimationContext.runAnimationGroup { context in
-            context.duration = 2.0
-            context.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
-            context.allowsImplicitAnimation = true
-            self.textFieldCenterXConstraint?.constant = -1000
-            self.window?.contentView?.layoutSubtreeIfNeeded()
-        } completionHandler: {
-       
-        }
     }
 }
