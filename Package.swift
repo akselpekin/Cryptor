@@ -8,8 +8,11 @@ let package = Package(
         .macOS(.v15),
     ],
     targets: [
-       
         .executableTarget(
-            name: "enordecrypt"),
+            name: "enordecrypt",
+            resources: [
+                .process("ASSETS"),
+            ]
+        ),    
     ]
 )
