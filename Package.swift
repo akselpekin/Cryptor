@@ -3,13 +3,13 @@
 import PackageDescription
 
 let package = Package(
-    name: "enordecrypt",
+    name: "Cryptor",
     platforms: [
         .macOS(.v15),
     ],
     targets: [
         .executableTarget(
-            name: "enordecrypt",
+            name: "Cryptor",
             resources: []
         ),    
     ]
