@@ -10,9 +10,7 @@ let package = Package(
     targets: [
         .executableTarget(
             name: "enordecrypt",
-            resources: [
-                .process("ASSETS"),
-            ]
+            resources: []
         ),    
     ]
 )
