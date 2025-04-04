@@ -3,20 +3,28 @@ import AppKit
 
 @main
 struct CryptorApp: App {
-
-    @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    init() {
+        NSApplication.shared.setActivationPolicy(.regular)
+    }
 
     var body: some Scene {
         WindowGroup {
             ContentView()
         }
+        .windowStyle(HiddenTitleBarWindowStyle())
+        .commands {
+            CommandGroup(replacing: CommandGroupPlacement.newItem) {
+            }
+        }    
     }
 }
 
-// MARK: - SwiftUI View
-
+// MARK: - SwiftUI
 struct ContentView: View {
     @State private var filePath: String = "Select a File"
+    @State private var selectedSetting: String = "Lock"
+    @State private var isLockSelected: Bool = true
+    @State private var userInput: String = ""
 
     var body: some View {
         ZStack(alignment: .topLeading) {
@@ -38,27 +46,49 @@ struct ContentView: View {
 
                 HStack(spacing: 20) {
                     Button(action: {
+                        selectedSetting = "Lock"
+                        isLockSelected = true
                         lockAction()
                     }) {
                         Text("Lock")
                             .font(.system(size: 18, weight: .semibold))
                             .foregroundColor(.black)
                             .padding()
-                            .background(Color.clear)
-                            .cornerRadius(8)
                     }
+                    .buttonStyle(PlainButtonStyle())
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 8)
+                            .stroke(isLockSelected ? Color.black : Color.clear, lineWidth: 2)
+                    )
 
                     Button(action: {
+                        selectedSetting = "Unlock"
+                        isLockSelected = false
                         unlockAction()
                     }) {
                         Text("Unlock")
                             .font(.system(size: 18, weight: .semibold))
                             .foregroundColor(.black)
                             .padding()
-                            .background(Color.clear)
-                            .cornerRadius(8)
                     }
+                    .buttonStyle(PlainButtonStyle())
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 8)
+                            .stroke(!isLockSelected ? Color.black : Color.clear, lineWidth: 2)
+                    )
                 }
+
+                // Secret Input Field
+                TextField("Your secret...", text: $userInput)
+                    .textFieldStyle(PlainTextFieldStyle())
+                    .foregroundColor(.black)
+                    .font(.system(size: 18, weight: .semibold))
+                    .padding(18)
+                    .frame(minWidth: 184)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 8)
+                            .stroke(Color.black, lineWidth: 2)
+                    )
             }
             .padding(20)
         }
@@ -81,19 +111,5 @@ struct ContentView: View {
 
     func unlockAction() {
         print("Unlock action triggered")
-    }
-}
-
-// MARK: - AppDelegate to remove default window decorations
-
-class AppDelegate: NSObject, NSApplicationDelegate {
-    func applicationDidFinishLaunching(_ notification: Notification) {
-        DispatchQueue.main.async {
-            if let window = NSApplication.shared.windows.first {
-                window.styleMask = [.borderless]
-                window.isOpaque = false
-                window.backgroundColor = .clear
-            }
-        }
     }
 }
