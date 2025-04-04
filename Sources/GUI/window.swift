@@ -89,6 +89,22 @@ struct ContentView: View {
                         RoundedRectangle(cornerRadius: 8)
                             .stroke(Color.black, lineWidth: 2)
                     )
+
+                // Confirm Button
+                Button(action: {
+                    confirmAction()
+                }) {
+                    Text("Confirm")
+                        .font(.system(size: 18, weight: .semibold))
+                        .foregroundColor(userInput.isEmpty ? .gray : .black)
+                        .padding()
+                }
+                .buttonStyle(PlainButtonStyle())
+                .overlay(
+                    RoundedRectangle(cornerRadius: 8)
+                        .stroke(userInput.isEmpty ? Color.gray : Color.black, lineWidth: 2)
+                )
+                .disabled(userInput.isEmpty)
             }
             .padding(20)
         }
@@ -111,5 +127,9 @@ struct ContentView: View {
 
     func unlockAction() {
         print("Unlock action triggered")
+    }
+
+    func confirmAction() {
+        print("Confirm action triggered with input: \(userInput)")
     }
 }
