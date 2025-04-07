@@ -1,4 +1,4 @@
-![Cryptor Logo](Sources/ASSETS/cryptor_logo.png)
+![Cryptor Logo](Sources/ASSETS/cryptor_raw.png)
 
 # Cryptor 1.0
 
