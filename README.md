@@ -1,3 +1,5 @@
+![Cryptor Logo](ASSETS/cryptor_logo.png)
+
 # Cryptor 1.0
 
 Cryptor is a simple macOS application for file encryption and decryption. It provides a minimal, modern SwiftUI interface where users can select a file, choose to either "Lock" (encrypt) or "Unlock" (decrypt) it, enter a secret (password), and then confirm the operation. The app processes the file accordingly and displays a status message.
