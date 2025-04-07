@@ -10,7 +10,11 @@ let package = Package(
     targets: [
         .executableTarget(
             name: "Cryptor",
-            resources: []
+            resources: [
+                .copy("ASSETS/cryptor_mac.icns"),
+                .copy("ASSETS/cryptor_raw.png"),
+                .copy("ASSETS/cryptor.ico"),
+            ]
         ),    
     ]
 )

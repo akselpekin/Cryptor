@@ -5,6 +5,9 @@ import AppKit
 struct CryptorApp: App {
     init() {
         NSApplication.shared.setActivationPolicy(.regular)
+        if let icon = NSImage(named: NSImage.Name("cryptor_mac.icns")) {
+            NSApplication.shared.applicationIconImage = icon
+        }
     }
 
     var body: some Scene {
@@ -25,6 +28,7 @@ struct ContentView: View {
     @State private var selectedSetting: String = "Lock"
     @State private var isLockSelected: Bool = true
     @State private var userInput: String = ""
+    @State private var outputMessage: String = ""
 
     var body: some View {
         ZStack(alignment: .topLeading) {
@@ -90,21 +94,32 @@ struct ContentView: View {
                             .stroke(Color.black, lineWidth: 2)
                     )
 
-                // Confirm Button
-                Button(action: {
-                    confirmAction()
-                }) {
-                    Text("Confirm")
+                HStack {
+                    // Confirm Button
+                    Button(action: {
+                        confirmAction()
+                    }) {
+                        Text("Confirm")
+                            .font(.system(size: 18, weight: .semibold))
+                            .foregroundColor(userInput.isEmpty ? .gray : .black)
+                            .padding()
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 8)
+                            .stroke(userInput.isEmpty ? Color.gray : Color.black, lineWidth: 2)
+                    )
+                    .disabled(userInput.isEmpty)
+                    
+                    // Output Text Field (read-only, no outline)
+                    TextField("", text: $outputMessage)
+                        .textFieldStyle(PlainTextFieldStyle())
+                        .foregroundColor(.black)
                         .font(.system(size: 18, weight: .semibold))
-                        .foregroundColor(userInput.isEmpty ? .gray : .black)
-                        .padding()
+                        .padding(18)
+                        .frame(minWidth: 184)
+                        .disabled(true)
                 }
-                .buttonStyle(PlainButtonStyle())
-                .overlay(
-                    RoundedRectangle(cornerRadius: 8)
-                        .stroke(userInput.isEmpty ? Color.gray : Color.black, lineWidth: 2)
-                )
-                .disabled(userInput.isEmpty)
             }
             .padding(20)
         }
@@ -122,14 +137,27 @@ struct ContentView: View {
     }
 
     func lockAction() {
-        print("Lock action triggered")
+        //print("Lock action triggered")
     }
 
     func unlockAction() {
-        print("Unlock action triggered")
+        //print("Unlock action triggered")
     }
 
     func confirmAction() {
-        print("Confirm action triggered with input: \(userInput)")
+        do {
+            if selectedSetting.lowercased() == "lock" {
+                try encryptFile(at: filePath, with: userInput)
+                outputMessage = "Encryption succeeded."
+            } else if selectedSetting.lowercased() == "unlock" {
+                try decryptFile(at: filePath, with: userInput)
+                outputMessage = "Decryption succeeded."
+            } else {
+                outputMessage = "Invalid: Use 'lock' for encryption or 'unlock' for decryption."
+            }
+        } catch {
+            outputMessage = "Operation failed: \(error.localizedDescription)"
+        }
+        print(outputMessage)
     }
 }
