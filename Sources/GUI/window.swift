@@ -83,16 +83,33 @@ struct ContentView: View {
                 }
 
                 // Secret Input Field
-                TextField("Your secret...", text: $userInput)
-                    .textFieldStyle(PlainTextFieldStyle())
-                    .foregroundColor(.black)
-                    .font(.system(size: 18, weight: .semibold))
-                    .padding(18)
-                    .frame(minWidth: 184)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 8)
-                            .stroke(Color.black, lineWidth: 2)
-                    )
+                HStack(spacing: 8) {
+                    TextField("Your secret...", text: $userInput)
+                        .textContentType(.newPassword)
+                        .textFieldStyle(PlainTextFieldStyle())
+                        .foregroundColor(.black)
+                        .font(.system(size: 18, weight: .semibold))
+                        .padding(18)
+                        .frame(minWidth: 184)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(Color.black, lineWidth: 2)
+                        )
+                    Button(action: {
+                        userInput = generateStrongPassword()
+                    }) {
+                        Image(systemName: "key.fill")
+                            .font(.system(size: 22))
+                            .frame(minWidth: 44, maxHeight: 57)
+                            .foregroundColor(.black)
+                            .background(Color.white)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 8)
+                                    .stroke(Color.black, lineWidth: 2)
+                            )
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                }
 
                 HStack {
                     // Confirm Button
@@ -159,5 +176,16 @@ struct ContentView: View {
             outputMessage = "Operation failed: \(error.localizedDescription)"
         }
         print(outputMessage)
+    }
+
+    func generateStrongPassword(length: Int = 20) -> String {
+        let charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_=+{}[]:;<>?,./"
+        var result = ""
+        for _ in 0..<length {
+            if let randomChar = charset.randomElement() {
+                result.append(randomChar)
+            }
+        }
+        return result
     }
 }
