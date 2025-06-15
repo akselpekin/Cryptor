@@ -37,7 +37,7 @@ struct ContentView: View {
                 .ignoresSafeArea()
 
             VStack(alignment: .leading, spacing: 20) {
-                Text("Cryptor 1.0")
+                Text("Cryptor 1.1")
                     .font(.system(size: 32, weight: .semibold))
                     .foregroundColor(.black)
 
